@@ -1,0 +1,4 @@
+<resources>
+
+    <string name="app_usual_content">多个app的通用内容，用于主activity</string>
+</resources>

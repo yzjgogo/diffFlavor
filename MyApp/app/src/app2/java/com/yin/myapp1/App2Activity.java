@@ -1,0 +1,45 @@
+package com.yin.myapp1;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.widget.TextView;
+
+import com.yin.myapp.BuildConfig;
+import com.yin.myapp.R;
+import com.yin.myapp.Signature;
+
+import java.util.Map;
+
+public class App2Activity extends AppCompatActivity {
+    private TextView tvApp2Content;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_app2);
+        tvApp2Content = (TextView) findViewById(R.id.tv_app2_content);
+
+        String signInfo = "";
+        Map<String,String> signMap = Signature.getSignatureInfo(this);
+        for (String key : signMap.keySet()) {
+            if (key.equals("subjectDN")) {
+                signInfo = "签名信息："+ key + "：" + signMap.get(key);
+            }
+        }
+        tvApp2Content.setText("应用基本信息:\n"+getAppInfo()+"\n"+signInfo);
+    }
+    private String getAppInfo() {
+        try {
+            String pkName = this.getPackageName();
+            String versionName = this.getPackageManager().getPackageInfo(
+                    pkName, 0).versionName;
+            int versionCode = this.getPackageManager()
+                    .getPackageInfo(pkName, 0).versionCode;
+            return "包名 ："+pkName + "\nversionName : " + versionName + "\nversionCode : " + versionCode
+                    +"\nBUILD_TYPE : "+ BuildConfig.BUILD_TYPE+"\nFLAVOR : "+BuildConfig.FLAVOR
+                    +"\nFLAVOR_APP : "+BuildConfig.FLAVOR_APP+"\nFLAVOR_SERVER : "+BuildConfig.FLAVOR_SERVER
+                    +"\nDOMAIN_NAME : "+BuildConfig.DOMAIN_NAME;
+        } catch (Exception e) {
+        }
+        return null;
+    }
+}
